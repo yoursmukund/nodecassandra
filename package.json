@@ -1,0 +1,19 @@
+{
+  "name": "nodecassandra",
+  "version": "1.0.0",
+  "description": "Connection of Cassandra with node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cassandra": "^0.1.0",
+    "cassandra-driver": "^3.3.0",
+    "driver": "^1.0.0",
+    "express": "^4.16.2",
+    "express-cassandra": "^2.0.0"
+  }
+}

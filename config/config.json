@@ -1,0 +1,10 @@
+{
+  "contactPoints": "172.30.56.60",
+  "protocolOptions": 9042,
+  "keyspace": "qnap",
+  "username": "cassandra",
+  "password": "cassandra",
+  "class": "SimpleStrategy",
+  "migration": "safe",
+  "replicationFactor":1
+}
