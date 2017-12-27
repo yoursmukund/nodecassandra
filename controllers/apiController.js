@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 var config = require("../config");
 var cassandra = require('cassandra-driver');
 
+
+
 // var ExpressCassandra = require('express-cassandra');
 
 
@@ -11,22 +13,43 @@ module.exports = function(app) {
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
-
     
-    const client = new cassandra.Client({ contactPoints: ['172.30.56.60'], keyspace: 'qnap' });
+    // const client = new cassandra.Client(config.getCassandraSettings());
      
     
-    // HTTP get to validate if Cassandra is connected
+    // HTTP get to create reminder table
     app.get('/api/createreminder', function(req, res){
 
-        const query = config.createReminderTable;
-        console.log(createReminderTable);
+        const query = config.createReminderTable();
         client.execute(query, [])
-      .then(result => res.send(result))
-      .catch(error => res.send(error));
+        .then(result => res.send("Success"))
+        .catch(error => res.send("Error: "+error));
         
     });
-    
+
+    //HTTP post to add reminder to the table
+    app.post('/api/addreminder', function(req, res){
+        const query = config.addReminder();
+        const queryParams = [req.body.userId, new Date(), req.body.reminder];
+        client.execute(query, queryParams, { prepare: true }, (err)=> {
+            if (err) throw err;
+            res.send("Insert Successful");
+        });
+
+    });
+
+
+    //HTTP get to get the node data
+    app.get('/api/getnodedata', function(req, res){
+        const query = config.getNodeData();
+        var currentDate = new Date();
+        const queryParams = [currentDate, currentDate.setHours(currentDate.getHours()-1)];
+        client.execute(query, queryParams, { prepare: true }, (err, data)=> {
+            if (err) throw err;
+            res.send(data);
+        });
+    });
+
 
     // var models = ExpressCassandra.createClient({
     //     clientOptions: config.getclientOptions(),
@@ -41,7 +64,7 @@ module.exports = function(app) {
     //     if (err) throw err;
     // });
 
-    //HTTP get to validate if Cassandra is connected
+    // HTTP get to validate if Cassandra is connected
     // app.get('/', function(req, res){
     //     res.send("Cassandra Connected!");
     // });

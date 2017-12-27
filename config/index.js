@@ -12,6 +12,10 @@ module.exports = {
 		}
 	},
 
+	getCassandraSettings: function(){
+		return { contactPoints: [configValues.contactPoints], keyspace: configValues.keyspace}
+	},
+
 	getOrmOptions: function(){
 		return {
 				defaultReplicationStrategy : {class: configValues.class,replication_factor: configValues.replicationFactor},
@@ -19,7 +23,16 @@ module.exports = {
 		}
 	},
 
-	createReminderTable: 'CREATE TABLE reminders (userId text,timestamp timestamp,reminder text,primary key (userId, timestamp)) with clustering order by (timestamp desc)'
+	createReminderTable: function(){
+		return configValues.createRemindersTable;
+	},
 
+	addReminder: function(){
+		return configValues.addReminder;
+	},
+
+	getNodeData: function(){
+		return configValues.nodeData;
+	}
 	
 }
