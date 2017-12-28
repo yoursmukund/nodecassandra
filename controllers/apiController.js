@@ -1,5 +1,3 @@
-var personModel = require('../models/personModel');
-var qnapUsersModel = require('../models/qnapUsersModel');
 var bodyParser = require('body-parser');
 var config = require("../config");
 var cassandra = require('cassandra-driver');
@@ -14,7 +12,7 @@ module.exports = function(app) {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     
-    // const client = new cassandra.Client(config.getCassandraSettings());
+    const client = new cassandra.Client(config.getCassandraSettings());
      
     
     // HTTP get to create reminder table
@@ -39,14 +37,14 @@ module.exports = function(app) {
     });
 
 
-    //HTTP get to get the node data
+    //HTTP get to get the node data from past 2 hours
     app.get('/api/getnodedata', function(req, res){
         const query = config.getNodeData();
-        var currentDate = new Date();
-        const queryParams = [currentDate, currentDate.setHours(currentDate.getHours()-1)];
+        var currentDate = Date.now();
+        const queryParams = [config.getclientOptions().contactPoints.toString(),currentDate, currentDate - 120000];
         client.execute(query, queryParams, { prepare: true }, (err, data)=> {
             if (err) throw err;
-            res.send(data);
+            res.send(data.rows);
         });
     });
 

@@ -1,7 +1,7 @@
 {
   "contactPoints": "172.30.56.60",
   "protocolOptions": 9042,
-  "keyspace": "qnap",
+  "keyspace": "qnapstat",
   "username": "cassandra",
   "password": "cassandra",
   "class": "SimpleStrategy",
@@ -9,6 +9,6 @@
   "replicationFactor":1,
   "createRemindersTable": "CREATE TABLE reminders (userId text,timestamp timestamp,reminder text,primary key (userId, timestamp)) with clustering order by (timestamp desc)",
   "addReminder": "INSERT INTO reminders (userId, timestamp, reminder) VALUES (?, ?, ?)",
-  "nodeData": "SELECT * FROM nodedata WHERE timestamp >= ? AND timestamp <= ?"
+  "nodeData": "SELECT toUnixTimestamp(timestamp) as timestamp, readiops FROM nodedata WHERE nodeip = ? AND timestamp <= ? AND timestamp >= ?"
 }
 
