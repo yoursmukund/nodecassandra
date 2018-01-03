@@ -4,13 +4,16 @@ var config = require("./config");
 var setupController = require("./controllers/setupController");
 var apiController = require("./controllers/apiController");
 var socketController = require("./controllers/socketController");
+var cassandra = require('cassandra-driver');
 
+//Initialize Cassandra
+const client = new cassandra.Client(config.getCassandraSettings());
 
 //Initialize the API
-apiController(app);
+apiController(app, client);
 
 //Initialize socket
-socketController(app);
+socketController(app, client);
 
 app.use(express.static(`${__dirname}/public`));
 

@@ -1,18 +1,16 @@
 var bodyParser = require('body-parser');
 var config = require("../config");
-var cassandra = require('cassandra-driver');
+
 
 
 
 // var ExpressCassandra = require('express-cassandra');
 
 
-module.exports = function(app) {
+module.exports = function(app, client) {
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
-    
-    const client = new cassandra.Client(config.getCassandraSettings());
      
     
     // HTTP get to create reminder table
