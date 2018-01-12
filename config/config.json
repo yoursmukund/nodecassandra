@@ -1,7 +1,7 @@
 {
-  "contactPoints": "172.30.56.64",
-  "protocolOptions": 9042,
-  "keyspace": "qnapstat",
+  "contactPoints": "",
+  "protocolOptions": ,
+  "keyspace": "",
   "username": "cassandra",
   "password": "cassandra",
   "class": "SimpleStrategy",
