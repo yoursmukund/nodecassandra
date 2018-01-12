@@ -1,5 +1,5 @@
 {
-  "contactPoints": "172.30.56.60",
+  "contactPoints": "172.30.56.64",
   "protocolOptions": 9042,
   "keyspace": "qnapstat",
   "username": "cassandra",

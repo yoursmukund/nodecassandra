@@ -13,13 +13,20 @@ module.exports = function(app, client){
 
     // When a client connects, we note it in the console
     io.on('connect', function (socket) {
-    	socket.on('getGraphData', function(data) {
-	        const query = config.getNodeData();
-	        const queryParams = [config.getclientOptions().contactPoints.toString(), data.currentDate, data.oldDate];
+    	socket.on('getGraphData', function() {
+        var currentDate = Date.now();
+        var oldDate = currentDate - 1200000;
+        const query = config.getNodeData();
+        var queryParams = [config.getclientOptions().contactPoints.toString(), currentDate, oldDate];
+        setInterval(()=>{
+            currentDate = Date.now();
+            oldDate = currentDate - 1200000;
+            queryParams = [config.getclientOptions().contactPoints.toString(), currentDate, oldDate];
 	        client.execute(query, queryParams, { prepare: true }, (err, data)=> {
 	            if (err) throw err;
-	            socket.emit('graphDataResponse', data.rows);
+	            socket.emit('graphDataResponse', data.rows.reverse());
 	        });
+        }, 30000);
     	});
     });
 
